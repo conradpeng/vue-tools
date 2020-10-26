@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link :to="{name: 'Login'}">登录页面</router-link>
+        <router-link :to="{name: 'Register'}">注册页面</router-link>
+        <router-link :to="{name: 'Mypage'}">个人主页</router-link>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+</body>
+<template id="login">
+    <div>
+        我是登录页面
+    </div>
+</template>
+<template id="register">
+    <div>
+        我是注册页面
+    </div>
+</template>
+<template id="mypage">
+    <div>
+        我是个人页面
+    </div>
+</template>
+<script>
+    const login = {
+        template: '#login'
+    }
+    const register = {
+        template: '#register'
+    }
+    const mypage = {
+        template: '#mypage'
+    }
+    let logStatus = true;
+    const router = new VueRouter({
+        routes: [
+            {
+                name: 'Login',
+                path: '/login',
+                component: login,
+                beforeEnter: (to, from, next) => {
+                    //因为触发时一定是在点击当前路由时，所以无需判断to.name
+                    if(logStatus){
+                        next('/mypage');
+                    }else{
+                        next();
+                    }
+                }
+            },
+            {
+                name: 'Register',
+                path: '/register',
+                component: register,
+                beforeEnter: (to, from, next) => {
+                    if(logStatus){
+                        next('/mypage');
+                    }else{
+                        next('/login');
+                    }
+                }
+            },
+            {
+                name: 'Mypage',
+                path: '/mypage',
+                component: mypage,
+                beforeEnter: (to, from, next) => {
+                    if(logStatus){
+                        next();
+                    }else{
+                        next('/login');
+                    }
+                }
+            }
+        ]
+    })
+
+    const vm = new Vue({
+        el: '#app',
+        router,
+    })
+</script>

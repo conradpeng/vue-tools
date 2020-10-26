@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全局前置守卫</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link :to="{name: 'Login'}">登录页面</router-link>
+        <router-link :to="{name: 'Register'}">注册页面</router-link>
+        <router-link :to="{name: 'Mypage'}">个人主页</router-link>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
+</body>
+<template id="login">
+    <div>
+        我是登录页面
+    </div>
+</template>
+<template id="register">
+    <div>
+        我是注册页面
+    </div>
+</template>
+<template id="mypage">
+    <div>
+        我是个人页面
+    </div>
+</template>
+<script>
+    const login = {
+        template: '#login'
+    }
+    const register = {
+        template: '#register'
+    }
+    const mypage = {
+        template: '#mypage'
+    }
+    const router = new VueRouter({
+        routes: [
+            {
+                name: 'Login',
+                path: '/login',
+                component: login
+            },
+            {
+                name: 'Register',
+                path: '/register',
+                component: register
+            },
+            {
+                name: 'Mypage',
+                path: '/mypage',
+                component: mypage
+            }
+        ]
+    })
+    //从后端请求回来登陆状态
+    let logStatus = false;
+
+    //根据登陆状态加载页面
+    router.beforeEach((to, from, next) => {
+        if(logStatus){
+            if(to.name == 'Login' || to.name == 'Register'){
+                next('/mypage'); // 此时是登录状态下的第一次点击，重定向到 mypage
+            }else{
+                next(); // 重定向后的请求 会访问到这里来，此时放行
+            }
+        }else{
+            if(to.name == 'Login'){
+                next(); // 非登录状态下 访问login 放行
+            }else{
+                next('/login'); // 非登录状态下 访问其他路由，重定向到 login
+            }
+        }
+    })
+    const vm = new Vue({
+        el: '#app',
+        router,
+    })
+</script>
+</html>

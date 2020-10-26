@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>action异步提交</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.js"></script>
+    <script src="https://unpkg.com/vuex"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/page1">page1</router-link>
+        <router-link to="/page2">page2</router-link>
+        <router-link to="/page3">page3</router-link>
+
+        <router-view></router-view>
+    </div>
+</body>
+<template id="page1">
+    <div>
+        {{name}}<br>
+        {{age}}<br>
+        <input type="text" name="" id="" :value="age" @keyup.enter="setAge"><br>
+        {{gender}}
+    </div>
+</template>
+
+<template id="page2">
+    <div>
+        
+    </div>
+</template>
+
+<template id="page3">
+
+</template>
+<script>
+    
+    const page1 = {
+        template: '#page1',
+        computed: {
+            ...Vuex.mapState(['name','gender','age']),
+        },
+        methods: {
+            ...Vuex.mapActions(['setAge']),
+
+            // setAge: function(event){
+            //     this.$store.dispatch('setAge', event);
+            // },
+        },
+    }
+    const page2 = {
+        template: '#page2'
+    }
+    const page3 = {
+        template: '#page3'
+    }
+    const store = new Vuex.Store({
+        state: {
+            name: '张三',
+            age: 23,
+            gender: '男'
+        },
+        mutations: {
+            setAge : function(state, payload){
+                state.age = payload.target.value;
+            }
+        },
+        actions: {
+            // setAge : function(context, payload){
+            //     setTimeout(()=>{
+            //         context.commit('setAge', payload);
+            //     }, 1000)
+            // }
+
+            setAge: function({commit}, payload){
+                setTimeout(()=>{
+                    commit('setAge', payload);
+                }, 1000)
+            }
+        }
+    })
+    const router = new VueRouter({
+        routes: [
+            {
+                path: '/page1',
+                component: page1
+            },
+            {
+                path: '/page2',
+                component: page2
+            },
+            {
+                path: '/page3',
+                component: page3
+            }
+        ]
+    })
+    const vm = new Vue({
+        el: '#app',
+        store,
+        router,
+    })
+</script>
+</html>

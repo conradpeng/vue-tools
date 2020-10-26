@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+</body>
+<script>
+    const app = new Vue({
+        el: '#app',
+        data() {
+            return {
+                userlist: []
+            }
+        },
+        methods: {
+            init: function(){
+                axios({
+                    method:'get',
+                    url: 'http://noncross.domain.com/data/user.php',
+                    params: {
+                        id:3
+                    }
+                }).then(res => {
+                    console.log(res.data);
+                }).catch(err => {
+                    console.log(err);
+                })
+            }
+        },
+        created() {
+            this.init();
+        },
+    })
+</script>
+</html>

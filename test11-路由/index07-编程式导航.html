@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+    <title>编程式导航</title>
+    <style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        color: #000;
+    }
+    body {
+        background-color: #67a3e1;
+    }
+    .bili-content {
+        display: flex;
+    }
+    .bili-content .bili-leftnav {
+        margin: 10px;
+        width: 200px;
+        background-color: #ffffff;
+    }
+    .bili-content .bili-leftnav li {
+        padding: 10px 20px;
+        height: 50px;
+        line-height: 50px;
+    }
+    .bili-content .bili-leftnav li a{
+        text-decoration: none;
+    }
+    .bili-content .bili-leftnav li:hover {
+        cursor: pointer;
+    }
+    .bili-content .bili-leftnav .active {
+        color: #5faee3;
+    }
+    .bili-content .bili-rightcontent {
+        flex: 1;
+        margin-left: 10px;
+    }
+    .bili-content .bili-rightcontent div:nth-child(1) div {
+        margin-top: 10px;
+        background: #ffffff;
+        padding: 10px 10px;
+    }
+    .router-link-exact-active.router-link-active{
+        color: #5faee3;
+    }
+    .msg-list{
+        width: 80px;
+        float: left;
+    }
+    .msg-list li{
+        list-style: none;
+        margin-top: 10px;
+        border: rgb(236, 234, 234) 1px solid;
+        text-align: center;
+    }
+    .msg-list li a {
+        text-decoration: none;
+    }
+    .msg-content{
+        margin-left: 10px;
+        width: 200px;
+        position: relative;
+        float: left;
+    }
+    </style>
+        
+</head>
+<body>
+    <div id="app">
+        <div class="bili-content">
+            <div class="bili-leftnav">
+                <ul>
+                    <li><router-link to="/writeback">回复我的</router-link></li>
+                    <li><router-link to="/call">@我的</router-link></li>
+                    <li><router-link to="/praise">收到的赞</router-link></li>
+                    <li><router-link to="/msg">我的私信</router-link></li>
+                </ul>
+            </div>
+            <div class="bili-rightcontent">
+                <transition enter-active-class="animated fadeInUp" mode="out-in" :duration="400">
+                    <router-view :userlist="userlist"></router-view>  
+                </transition>
+            </div>
+        </div>
+    </div>
+    <template id="writeback">
+        <div>
+            <div>回复我的</div>
+            <div>这是回复我的。。。。</div>
+        </div>
+    </template>
+    <template id="call">
+        <div>
+            <div>@我的</div>
+             <div>这是@我的。。。。</div>
+        </div>
+    </template>
+    <template id="praise">
+        <div>
+            <div>收到的赞</div>
+            <div>赞的列表。。。。</div>
+        </div>
+    </template>
+    <template id="msg">
+        <div>
+            <div>我的私信</div>
+            <div class="msg-list">
+                私信列表
+                <li v-for="i in userlist">
+                    <button @click="getMsgContent(i.id)">{{i.name}}</button>
+                </li>
+            </div>
+            <div class="msg-content">
+                聊天内容
+                <router-view></router-view>
+            </div>
+        </div>
+    </template>
+    <template id="msgContent">
+        <div>
+            我是用户 {{$route.query.id}} 的聊天框
+        </div>
+    </template>
+</body>
+<script>
+    const writeback = {
+        template: '#writeback'
+    }
+    const call = {
+        template: '#call'
+    }
+    const praise = {
+        template: '#praise'
+    }
+    const msg = {
+        template: '#msg',
+        props: ['userlist'],
+        methods: {
+            //方法要定义在 routerlink 所在的组件下，即当前组件
+            getMsgContent(id){
+                //默认方式  参数即 path  '/'代表根目录， 如果想写子路由去掉最前面的 '/'
+                //this.$router.push('/content');
+
+                //对象方式1 使用路由名
+                /*this.$router.push({
+                    name: 'msgContent' //路由名是区分大小写的
+                })
+
+                //对象方式2 使用path
+                this.$router.push({
+                    path: '/content'  //同默认方式的写法
+                })*/
+
+                //params 传值
+                this.$router.push({
+                    name: 'msgContent', // 固定写法 name 与 params结合
+                    params: {id}
+                });
+
+                //query 传值
+                /*this.$router.push({
+                    name: 'msgContent',
+                    query: {id}
+                })*/
+            }
+        },
+    }
+    const msgContent = {
+        template: '#msgContent'   
+    }
+    const router = new VueRouter({
+        routes: [
+            {
+                path: '/',
+                name: 'root',
+                redirect: '/writeback'
+            },
+            {
+                path: '/writeback',
+                name: 'writeback',
+                component: writeback,
+
+            },
+            {
+                path: '/call',
+                name: 'call',
+                component: call
+            },
+            {
+                path: '/praise',
+                name: 'praise',
+                component: praise
+            },
+            {
+                path: '/msg',
+                name: 'msg',
+                component: msg,
+                children: [
+                    {
+                        name: 'msgContent',
+                        path: ':id',
+                        component: msgContent,
+                    }
+                ]
+            }
+        ]
+    })
+    let vm = new Vue({
+        el: "#app",
+        router: router,
+        data() {
+            return {
+                userlist: [
+                    {id: '213123', name: '张三'},
+                    {id: '894372', name: '李四'},
+                    {id: '834701', name: '王五'}
+                ]
+            }
+        },
+    })
+</script>
+</html>

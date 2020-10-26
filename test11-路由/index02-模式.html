@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>路由的基本使用</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
+    <style>
+
+    * {
+        margin: 0;
+        padding: 0;
+        color: #000;
+    }
+    body {
+        background-color: #67a3e1;
+    }
+    .bili-content {
+        display: flex;
+    }
+    .bili-content .bili-leftnav {
+        margin: 10px;
+        width: 200px;
+        background-color: #ffffff;
+    }
+    .bili-content .bili-leftnav li {
+        padding: 10px 20px;
+        height: 50px;
+        line-height: 50px;
+    }
+    .bili-content .bili-leftnav li a{
+        text-decoration: none;
+    }
+    .bili-content .bili-leftnav li:hover {
+        cursor: pointer;
+    }
+    .bili-content .bili-leftnav .active {
+        color: #5faee3;
+    }
+    .bili-content .bili-rightcontent {
+        flex: 1;
+        margin-left: 10px;
+    }
+    .bili-content .bili-rightcontent div:nth-child(1) div {
+        margin-top: 10px;
+        background: #ffffff;
+        padding: 10px 10px;
+    }
+    .router-link-exact-active.router-link-active{
+        color: #5faee3;
+    }
+    </style>
+        
+</head>
+<body>
+    <div id="app">
+        <div class="bili-content">
+            <div class="bili-leftnav">
+                <ul>
+                    <li><router-link to="/static/writeback">回复我的</router-link></li>
+                    <li><router-link to="/static/call">@我的</router-link></li>
+                    <li><router-link to="/static/praise">收到的赞</router-link></li>
+                </ul>
+            </div>
+            <div class="bili-rightcontent">
+                <transition enter-active-class="animated fadeInUp" mode="out-in" :duration="400">
+                    <router-view></router-view>  
+                </transition>
+            </div>
+        </div>
+    </div>
+    <template id="writeback">
+        <div>
+            <div>回复我的</div>
+            <div>回复我的消息。。。。</div>
+        </div>
+    </template>
+    <template id="call">
+        <div>
+            <div>@我的</div>
+            <div>@我的消息。。。。</div>
+        </div>
+    </template>
+    <template id="praise">
+        <div>
+            <div>收到的赞</div>
+            <div>赞的列表。。。。</div>
+        </div>
+    </template>
+</body>
+<script>
+    const writeback = {
+        template : '#writeback'
+    };
+    const call = {
+        template : '#call'
+    };
+    const praise = {
+        template : '#praise'
+    };
+    const router = new VueRouter({
+        mode : 'history',
+        routes: [
+            {
+                path: "/",
+                redirect: "/static/writeback"
+            },
+            {
+                name: "writeback",
+                path: "/static/writeback",
+                component: writeback
+            },
+            {
+                name: "call",
+                path: "/static/call",
+                component: call
+            },
+            {
+                name: "praise",
+                path: "/static/praise",
+                component: praise
+            }
+        ]
+    })
+    let vm = new Vue({
+        el: "#app",
+        router : router
+    })
+</script>
+</html>

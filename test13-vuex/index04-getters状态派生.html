@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>getters</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.bootcss.com/vue-router/3.1.3/vue-router.js"></script>
+    <script src="https://unpkg.com/vuex"></script>
+</head>
+<body>
+    <div id="app">
+        <router-link to="/page1">page1</router-link>
+        <router-link to="/page2">page2</router-link>
+        <router-link to="/page3">page3</router-link>
+
+        <router-view></router-view>
+    </div>
+</body>
+<template id="page1">
+    <div>
+        {{getName}}<br>
+        {{getAge}}<br>
+        {{getGender(3)}}
+    </div>
+</template>
+
+<template id="page2">
+    <div>
+        {{getName}}<br>
+        {{getAge}}<br>
+    </div>
+</template>
+
+<template id="page3">
+
+</template>
+<script>
+    
+    const page1 = {
+        template: '#page1',
+        computed: {
+
+            // getGender: function(){
+            //     return this.$store.getters.getGender;
+            // },
+
+            // ...Vuex.mapGetters({
+            //     name: 'getName',
+            //     age: 'getAge'
+            // }),
+            ...Vuex.mapGetters(['getGender', 'getName', 'getAge']),
+        },
+    }
+    const page2 = {
+        template: '#page2',
+        computed: {
+            ...Vuex.mapGetters(['getName', 'getAge']),
+        },
+    }
+    const page3 = {
+        template: '#page3'
+    }
+    const store = new Vuex.Store({
+        state: {
+            name: '张三',
+            age: 23,
+            gender: '男'
+        },
+        getters: {
+            getGender: state => id => {
+                return '性别：' + state.gender + ',' + id;
+            },
+            getName: function(state){
+                return '姓名：' + state.name;
+            },
+            getAge: function(state){
+                return '年龄：' + state.age;
+            }
+        },
+    })
+    const router = new VueRouter({
+        routes: [
+            {
+                path: '/page1',
+                component: page1
+            },
+            {
+                path: '/page2',
+                component: page2
+            },
+            {
+                path: '/page3',
+                component: page3
+            }
+        ]
+    })
+    const vm = new Vue({
+        el: '#app',
+        store,
+        router,
+    })
+</script>
+</html>
