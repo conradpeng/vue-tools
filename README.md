@@ -1,3 +1,46 @@
+<!-- TOC -->
+
+- [vue-cli4](#vue-cli4)
+    - [安装步骤](#%E5%AE%89%E8%A3%85%E6%AD%A5%E9%AA%A4)
+    - [快速原型开发](#%E5%BF%AB%E9%80%9F%E5%8E%9F%E5%9E%8B%E5%BC%80%E5%8F%91)
+    - [vue 项目](#vue-%E9%A1%B9%E7%9B%AE)
+- [路由](#%E8%B7%AF%E7%94%B1)
+    - [基本使用](#%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8)
+    - [路由模式](#%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%BC%8F)
+    - [动态路由](#%E5%8A%A8%E6%80%81%E8%B7%AF%E7%94%B1)
+    - [路由传参](#%E8%B7%AF%E7%94%B1%E4%BC%A0%E5%8F%82)
+    - [嵌套路由](#%E5%B5%8C%E5%A5%97%E8%B7%AF%E7%94%B1)
+    - [编程式导航](#%E7%BC%96%E7%A8%8B%E5%BC%8F%E5%AF%BC%E8%88%AA)
+    - [命名视图和命名路由](#%E5%91%BD%E5%90%8D%E8%A7%86%E5%9B%BE%E5%92%8C%E5%91%BD%E5%90%8D%E8%B7%AF%E7%94%B1)
+    - [重定向](#%E9%87%8D%E5%AE%9A%E5%90%91)
+    - [元信息](#%E5%85%83%E4%BF%A1%E6%81%AF)
+    - [懒加载](#%E6%87%92%E5%8A%A0%E8%BD%BD)
+    - [滚动重置](#%E6%BB%9A%E5%8A%A8%E9%87%8D%E7%BD%AE)
+- [导航守卫](#%E5%AF%BC%E8%88%AA%E5%AE%88%E5%8D%AB)
+    - [全局前置守卫](#%E5%85%A8%E5%B1%80%E5%89%8D%E7%BD%AE%E5%AE%88%E5%8D%AB)
+    - [全局后置守卫](#%E5%85%A8%E5%B1%80%E5%90%8E%E7%BD%AE%E5%AE%88%E5%8D%AB)
+    - [路由独享守卫](#%E8%B7%AF%E7%94%B1%E7%8B%AC%E4%BA%AB%E5%AE%88%E5%8D%AB)
+    - [组件内守卫](#%E7%BB%84%E4%BB%B6%E5%86%85%E5%AE%88%E5%8D%AB)
+    - [触发流程](#%E8%A7%A6%E5%8F%91%E6%B5%81%E7%A8%8B)
+    - [使用建议](#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE)
+- [vuex](#vuex)
+    - [store模式](#store%E6%A8%A1%E5%BC%8F)
+    - [state 状态设置 mapState](#state-%E7%8A%B6%E6%80%81%E8%AE%BE%E7%BD%AE-mapstate)
+    - [getters 状态派生 mapGetters](#getters-%E7%8A%B6%E6%80%81%E6%B4%BE%E7%94%9F-mapgetters)
+    - [mutations 状态提交 mapMutations](#mutations-%E7%8A%B6%E6%80%81%E6%8F%90%E4%BA%A4-mapmutations)
+    - [actions 异步提交 mapActions](#actions-%E5%BC%82%E6%AD%A5%E6%8F%90%E4%BA%A4-mapactions)
+    - [modules 模块化](#modules-%E6%A8%A1%E5%9D%97%E5%8C%96)
+- [axios](#axios)
+    - [安装](#%E5%AE%89%E8%A3%85)
+    - [基本功能](#%E5%9F%BA%E6%9C%AC%E5%8A%9F%E8%83%BD)
+    - [实例化](#%E5%AE%9E%E4%BE%8B%E5%8C%96)
+    - [拦截器](#%E6%8B%A6%E6%88%AA%E5%99%A8)
+    - [跨域](#%E8%B7%A8%E5%9F%9F)
+    - [vue 封装](#vue-%E5%B0%81%E8%A3%85)
+
+<!-- /TOC -->
+
+
 # vue-cli4
 
 ## 安装步骤
@@ -28,6 +71,7 @@
     此时就已经可以使用`vue-cli`了
     
 ----
+
 ## 快速原型开发
 
 - 快速原型开发
@@ -56,6 +100,7 @@
 
 
 ----
+
 ## vue 项目
 
 - 项目创建
@@ -74,6 +119,7 @@
     ```
     npm run build
     ```
+
 # 路由
 
 > 路由一般用来构建单页面项目
